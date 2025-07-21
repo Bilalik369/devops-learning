@@ -6,7 +6,7 @@ export const connectDB= async()=>{
    await mongoose.connect(process.env.MONGODB_URI)
     console.log("base des donner connect succssefly")
   } catch (error) {
-    console.log("error to conncting ")
+    console.error("error to connecting:", error);
     process.exit(1)
   }
    
