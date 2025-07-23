@@ -33,9 +33,11 @@ jobs:
       working-directory: ./backend
       run: echo "No tests yet"
 
+   
     - name: Build Docker image
-      working-directory: ./backend  
+      working-directory: ./backend
       run: docker build -t auth-backend .
     
+
     - name: Run Docker Compose
       run: docker-compose up -d
