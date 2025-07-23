@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests (إلا عندك test script)
+      - name: Run tests (test script)
         run: echo "No tests yet"
 
       - name: Build Docker image
