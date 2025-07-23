@@ -10,12 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo
-        ports:
-          - 27017:27017
 
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -37,6 +33,6 @@ jobs:
       working-directory: ./beckend
       run: docker build -t auth-backend .
 
+
     - name: Run Docker Compose
-      working-directory: ./beckend
       run: docker compose up -d
