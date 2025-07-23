@@ -39,4 +39,4 @@ jobs:
 
     - name: Run Docker Compose
       working-directory: ./beckend
-      run: docker-compose up -d
+      run: docker compose up -d
