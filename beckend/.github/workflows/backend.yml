@@ -1,0 +1,38 @@
+name: CI/CD Backend
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests (إلا عندك test script)
+        run: echo "No tests yet"
+
+      - name: Build Docker image
+        run: docker build -t auth-backend .
+
+      - name: Run Docker Compose
+        run: docker-compose up -d
