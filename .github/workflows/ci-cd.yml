@@ -21,7 +21,7 @@ jobs:
         working-directory: ./beckend
         run: npm ci
 
-      - name: Run tests (test script)
+      - name: Run tests ( if test script)
         working-directory: ./beckend
         run: echo "No tests yet"
 
