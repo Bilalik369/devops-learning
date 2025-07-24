@@ -3,36 +3,43 @@ name: CI/CD Backend
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
-
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Install dependencies
-      working-directory: ./beckend
-      run: npm ci
+      - name: Install dependencies
+        working-directory: ./beckend
+        run: npm ci
 
-    - name: Run tests (test script)
-      working-directory: ./beckend
-      run: echo "No tests yet"
+      - name: Run tests (test script)
+        working-directory: ./beckend
+        run: echo "No tests yet"
 
-    - name: Build Docker image
-      working-directory: ./beckend
-      run: docker build -t auth-backend .
+      - name: Build Docker image
+        working-directory: ./beckend
+        run: docker build -t auth-backend .
 
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-    - name: Run Docker Compose
-      run: docker compose up -d
+      - name: Push Docker image
+        run: |
+          docker tag auth-backend ${{ secrets.DOCKER_USERNAME }}/auth-backend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/auth-backend:latest
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'devops-learning-backend'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: '${{ secrets.DOCKER_USERNAME }}/auth-backend:latest'
