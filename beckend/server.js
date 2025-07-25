@@ -14,7 +14,7 @@ const PORT  = process.env.PORT
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Hey there!");
+    res.send("404.js is the best!");
   });
 
 app.use('/api/auth', authRoutes);
